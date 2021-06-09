@@ -1,6 +1,6 @@
 const sets = {
 
-    base: [`base1`, `Base`],
+    base: [`base1`, `Base Set`],
     jungle: [`base2`, `Jungle`],
     wizardsblackstarpromos: [`basep`, `Wizards Black Star Promos`],
     fossil: [`base3`, `Fossil`],
@@ -125,7 +125,17 @@ const sets = {
 
 }
 
+const rarityColors = {
+
+    'Common': 'GREEN',
+    'Uncommon': 'BLUE',
+    'Rare': 'PURPLE',
+    'Rare Holo': 'GOLD',
+    'Rare Holo ex': 'GOLD',
+    'Rare Secret': '#990000',
+}
+
 
 module.exports = {
-    sets
+    sets, rarityColors
 }
