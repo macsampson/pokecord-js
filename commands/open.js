@@ -1,40 +1,56 @@
 const Discord = require('discord.js');
 const pokemon = require('pokemontcgsdk');
 const { getCards } = require('../utils/getCards.js');
-const { sets } = require('../utils/dictionaries.js')
+const { sets, rarityColors } = require('../utils/dictionaries.js')
 
 module.exports = {
     name: 'open',
     desc: "Command to open up a pack of cards",
+    usage: '!open <set>',
     async execute(message, args) {
         if (!(args[0] in sets)) {
             message.channel.send(`No such set "${args[0]}", please refer to !help to see available sets!`)
             throw `No such set ${args[0]}`
         }
-        message.channel.send(`Opening a ${sets[args[0]][1]} pack!`)
-        // message.channel.send(`Opening a ${args[0]} pack!`)
+        message.channel.send(`Opening ${sets[args[0]][1].startsWith("E")
+            || sets[args[0]][1].startsWith("A")
+            || sets[args[0]][1].startsWith("I")
+            || sets[args[0]][1].startsWith("O")
+            || sets[args[0]][1].startsWith("U") ? "an" : "a"} ${sets[args[0]][1]} pack!`)
+
         let chosen = await getCards(sets[args[0]][0])
         // console.log(chosen)
         let embeds = []
-        Object.values(chosen).forEach((rarity) => {
-            rarity.forEach((card) => {
-                // console.log(card.name)
+
+        const pulledcards = Object.values(chosen).reduce(function (acc, cur) {
+            return acc.concat(cur);
+        }, []);
+
+        // console.log(pulledcards.length)
+
+        pulledcards.forEach((card, index) => {
+            // console.log(card.name)
+            setTimeout(function () {
                 let embeddedCard = new Discord.MessageEmbed()
                     .setTitle(card.name)
                     .setImage(card.images.large)
                     .setAuthor(message.author.username + "'s " + card.set.name + " cards", message.author.displayAvatarURL())
-                    .setDescription(card.flavorText)
+                    .setDescription((card.flavorText == undefined) ? "" : card.flavorText)
                     .addFields(
                         { name: 'Rarity', value: card.rarity, inline: true, },
                         { name: 'Artist', value: card.artist, inline: true, })
-                    .setFooter('Pulled: ')
-                    .setTimestamp();
+                    .setFooter('Pulled')
+                    .setTimestamp()
+                    .setColor(rarityColors[card.rarity] || "");
                 message.channel.send(embeddedCard)
                 embeds.push(embeddedCard)
+            }, 1500 * index);
 
-            });
-        })
-        console.log(embeds)
+
+
+        });
+
+        // console.log(embeds)
         // message.channel.createWebhook(`${message.author.username}'s Cards`, message.author.displayAvatarURL)
         //     .then(w => w.send({ embeds }));
     }
