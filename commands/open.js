@@ -1,23 +1,31 @@
-const Discord = require('discord.js');
-const pokemon = require('pokemontcgsdk');
-const { getCards } = require('../utils/getCards.js');
-const { sets, rarityColors } = require('../utils/dictionaries.js')
+const Discord = require('discord.js'),
+    // pokemon = require('pokemontcgsdk'),
+    { getCards } = require('../utils/getCards.js'),
+    { sets, rarityColors } = require('../utils/dictionaries.js'),
+    { User } = require('../database/dbObjects');
 
 module.exports = {
     name: 'open',
     desc: "Command to open up a pack of cards",
-    usage: '!open <set>',
-    async execute(message, args) {
+    usage: '!open <card set>',
+    async execute(message, args, currency) {
         if (!(args[0] in sets)) {
             message.channel.send(`No such set "${args[0]}", please refer to !help to see available sets!`)
-            throw `No such set ${args[0]}`
+            // throw `No such set ${args[0]}`
+            return
         }
+
+        // const user = await User.findOne({ where: { user_id: message.author.id } });
+        const user_balance = currency.getBalance(message.author.id)
         message.channel.send(`Opening ${sets[args[0]][1].startsWith("E")
             || sets[args[0]][1].startsWith("A")
             || sets[args[0]][1].startsWith("I")
             || sets[args[0]][1].startsWith("O")
             || sets[args[0]][1].startsWith("U") ? "an" : "a"} ${sets[args[0]][1]} pack!`)
 
+        const target = message.mentions.users.first() || message.author;
+        const user = await User.findOne({ where: { user_id: target.id } });
+        // console.log("found user")
         let chosen = await getCards(sets[args[0]][0])
         // console.log(chosen)
         let embeds = []
@@ -43,7 +51,8 @@ module.exports = {
                     .setTimestamp()
                     .setColor(rarityColors[card.rarity] || "");
                 message.channel.send(embeddedCard)
-                embeds.push(embeddedCard)
+                user.addItem(card)
+                // embeds.push(embeddedCard)
             }, 1500 * index);
 
 
