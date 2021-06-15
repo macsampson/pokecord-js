@@ -12,6 +12,8 @@
     "discord.js": "^12.5.3",
     "dotenv": "^10.0.0",
     "mongoose": "^5.12.13",
-    "pokemontcgsdk": "^2.0.0"
+    "pokemontcgsdk": "^2.0.0",
+    "sequelize": "^6.6.2",
+    "sqlite3": "^5.0.2"
   }
 }

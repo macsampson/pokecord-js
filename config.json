@@ -1,0 +1,12 @@
+{
+    "Name": "Pokecord",
+    "token": "",
+    "prefix": "!",
+    "mongoURI": "mongodb://localhost/pokecord",
+    "trackergg": "",
+    "color": "#7122E3",
+    "footer": "",
+    "adminRole": "",
+    "ownerid": "18 Digit Discord User ID",
+    "bugchannelid": "18 Digit Discord Channel ID"
+}
