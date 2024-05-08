@@ -4,16 +4,29 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "lint": "eslint ./",
+    "start": "node index.js",
+    "dev": "nodemon index.js",
+    "db": "sequelize-cli"
   },
   "author": "Mac Sampson",
   "license": "ISC",
   "dependencies": {
     "discord.js": "^12.5.3",
     "dotenv": "^10.0.0",
+    "eslint-config-airbnb": "^18.2.1",
+    "eslint-config-prettier": "^8.3.0",
+    "eslint-plugin-prettier": "^3.4.0",
     "mongoose": "^5.12.13",
     "pokemontcgsdk": "^2.0.0",
     "sequelize": "^6.6.2",
     "sqlite3": "^5.0.2"
+  },
+  "devDependencies": {
+    "eslint": "^7.29.0",
+    "nodemon": "^2.0.7",
+    "prettier": "^3.2.5",
+    "sequelize-cli": "^6.2.0"
   }
 }
